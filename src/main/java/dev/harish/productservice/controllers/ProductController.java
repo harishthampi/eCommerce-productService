@@ -5,6 +5,9 @@ import dev.harish.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController {
@@ -14,8 +17,8 @@ public class ProductController {
      }
 
     @GetMapping
-    public void getAllProducts(){
-
+    public List<GenericProductDto> getAllProducts(){
+         return productService.getAllProducts();
     }
     @GetMapping("{id}")
     public GenericProductDto getProductById(@PathVariable("id") Long id ){
@@ -23,13 +26,14 @@ public class ProductController {
     }
 
     @DeleteMapping("{id}")
-    public void deleteProductById(){
+    public String deleteProductById(@PathVariable("id") Long id){
+         return productService.deleteProductById(id);
 
     }
     
     @PostMapping
-    public void createProduct(){
-
+    public GenericProductDto createProduct(@RequestBody GenericProductDto product){
+         return productService.createProduct(product);
     }
 
     @PutMapping("{id}")
