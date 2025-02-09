@@ -10,6 +10,6 @@ import java.util.List;
 public interface ProductService {
     GenericProductDto getProductById(Long id);
     GenericProductDto createProduct(GenericProductDto product);
-    String deleteProductById (Long id);
+    GenericProductDto deleteProductById (Long id);
     List<GenericProductDto> getAllProducts();
 }
