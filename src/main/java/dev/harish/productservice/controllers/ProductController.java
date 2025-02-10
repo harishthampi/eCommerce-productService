@@ -3,6 +3,8 @@ package dev.harish.productservice.controllers;
 import dev.harish.productservice.dtos.GenericProductDto;
 import dev.harish.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +28,9 @@ public class ProductController {
     }
 
     @DeleteMapping("{id}")
-    public GenericProductDto deleteProductById(@PathVariable("id") Long id){
-         return productService.deleteProductById(id);
+    public ResponseEntity<GenericProductDto> deleteProductById(@PathVariable("id") Long id){
+         return new ResponseEntity<>(productService.deleteProductById(id), HttpStatus.NOT_FOUND);
+
     }
     
     @PostMapping
@@ -36,7 +39,7 @@ public class ProductController {
     }
 
     @PutMapping("{id}")
-    public void updateProductById(){
-
+    public GenericProductDto updateProductById(@RequestBody GenericProductDto product,@PathVariable("id") Long id){
+         return productService.updateProductById(product,id);
     }
 }
