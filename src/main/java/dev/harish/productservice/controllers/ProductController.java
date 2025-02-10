@@ -1,6 +1,8 @@
 package dev.harish.productservice.controllers;
 
+import dev.harish.productservice.dtos.ExceptionDto;
 import dev.harish.productservice.dtos.GenericProductDto;
+import dev.harish.productservice.exceptions.NotFoundException;
 import dev.harish.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -23,8 +25,9 @@ public class ProductController {
          return productService.getAllProducts();
     }
     @GetMapping("{id}")
-    public GenericProductDto getProductById(@PathVariable("id") Long id ){
-        return productService.getProductById(id);
+    public GenericProductDto getProductById(@PathVariable("id") Long id ) throws NotFoundException{
+
+         return productService.getProductById(id);
     }
 
     @DeleteMapping("{id}")
@@ -42,4 +45,5 @@ public class ProductController {
     public GenericProductDto updateProductById(@RequestBody GenericProductDto product,@PathVariable("id") Long id){
          return productService.updateProductById(product,id);
     }
+
 }

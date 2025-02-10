@@ -2,6 +2,7 @@ package dev.harish.productservice.services;
 
 import dev.harish.productservice.dtos.GenericProductDto;
 import dev.harish.productservice.dtos.fakeStoreProductDto;
+import dev.harish.productservice.exceptions.NotFoundException;
 import dev.harish.productservice.models.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -39,10 +40,13 @@ public class FakeStoreProductService implements ProductService{
         return product;
     }
     @Override
-    public GenericProductDto getProductById(Long id) {
+    public GenericProductDto getProductById(Long id) throws NotFoundException {
         RestTemplate restTemplate = restTemplateBuilder.build();
         ResponseEntity<fakeStoreProductDto> response = restTemplate.getForEntity(productSpecificRequestUrl,fakeStoreProductDto.class,id);
         fakeStoreProductDto fakeStoreProductDto = response.getBody();
+        if(fakeStoreProductDto == null){
+            throw new NotFoundException("Product with id:"+ id + " doesn't exist.");
+        }
         return convertFakeStoreProductIntoGenericProduct(fakeStoreProductDto);
     }
 
