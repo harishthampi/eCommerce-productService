@@ -1,11 +1,11 @@
-package dev.harish.productservice.dtos;
+package dev.harish.productservice.Clients.productService.fakeStrore;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 @Setter
 @Getter
-public class fakeStoreProductDto {
+public class FakeStoreProductDto {
     @JsonProperty("id")
     private Long id;
     @JsonProperty("title")
