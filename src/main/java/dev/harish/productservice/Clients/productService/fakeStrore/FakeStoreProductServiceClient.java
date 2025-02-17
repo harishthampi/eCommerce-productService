@@ -19,16 +19,18 @@ public class FakeStoreProductServiceClient{
     @Value("${fakeStore.api.url}")
     private String fakeStoreUrl;
 
-    @Value("${fakeStore.api.paths.product}")
+    @Value("${fakeStore.api.paths.products}")
     private String fakeStoreProductApiPath;
-    private String productSpecificRequestUrl = fakeStoreUrl+fakeStoreProductApiPath+"/{id}";
-    private String ProductRequestUrl = fakeStoreUrl+fakeStoreProductApiPath;
+    private String productSpecificRequestUrl;
+    private String productRequestUrl;
 
 
 
 
-    public FakeStoreProductServiceClient(RestTemplateBuilder restTemplateBuilder){
+    public FakeStoreProductServiceClient(RestTemplateBuilder restTemplateBuilder, @Value("${fakeStore.api.url}") String fakeStoreUrl,@Value("${fakeStore.api.paths.products}")String fakeStoreProductApiPath){
         this.restTemplateBuilder = restTemplateBuilder;
+        this.productSpecificRequestUrl = fakeStoreUrl+fakeStoreProductApiPath+"/{id}";
+        this.productRequestUrl = fakeStoreUrl+fakeStoreProductApiPath;
     }
 
 
@@ -44,7 +46,7 @@ public class FakeStoreProductServiceClient{
 
     public FakeStoreProductDto createProduct(GenericProductDto product){
         RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductDto> response = restTemplate.postForEntity(ProductRequestUrl,product,FakeStoreProductDto.class);
+        ResponseEntity<FakeStoreProductDto> response = restTemplate.postForEntity(productRequestUrl,product,FakeStoreProductDto.class);
         return response.getBody();
     }
 
@@ -60,7 +62,7 @@ public class FakeStoreProductServiceClient{
 
     public List<FakeStoreProductDto> getAllProducts(){
         RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductDto[]> response = restTemplate.getForEntity(ProductRequestUrl, FakeStoreProductDto[].class);
+        ResponseEntity<FakeStoreProductDto[]> response = restTemplate.getForEntity(productRequestUrl, FakeStoreProductDto[].class);
         return Arrays.stream(response.getBody()).toList();
     }
 
