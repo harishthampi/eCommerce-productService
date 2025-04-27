@@ -35,7 +35,7 @@ public class ProductController {
          return new ResponseEntity<>(productService.deleteProductById(id), HttpStatus.NOT_FOUND);
 
     }
-    
+
     @PostMapping
     public GenericProductDto createProduct(@RequestBody GenericProductDto product){
          return productService.createProduct(product);

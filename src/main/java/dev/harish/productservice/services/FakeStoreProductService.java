@@ -15,7 +15,6 @@ import java.util.List;
 @Service("fakeStoreProductService")
 public class FakeStoreProductService implements ProductService{
     private final FakeStoreProductServiceClient fakeStoreProductServiceClient;
-    RestTemplateBuilder restTemplateBuilder;
     private String productSpecificRequestUrl = "https://fakestoreapi.com/products/{id}";
     private String createProductRequestUrl = "https://fakestoreapi.com/products";
     private String getAllProductsRequestUrl =  "https://fakestoreapi.com/products";
