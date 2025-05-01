@@ -11,15 +11,15 @@ public class GenericProductDto {
     private String description;
     private String image;
     private String category;
-    private double price;
+    private String price;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public String getPrice() { return price; }
+    public void setPrice(String price) { this.price = price; }
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }

@@ -4,7 +4,11 @@ import dev.harish.productservice.Clients.productService.fakeStrore.FakeStoreProd
 import dev.harish.productservice.dtos.GenericProductDto;
 import dev.harish.productservice.Clients.productService.fakeStrore.FakeStoreProductDto;
 import dev.harish.productservice.exceptions.NotFoundException;
+import dev.harish.productservice.models.Category;
+import dev.harish.productservice.models.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 
@@ -18,15 +22,15 @@ public class FakeStoreProductService implements ProductService{
     private String productSpecificRequestUrl = "https://fakestoreapi.com/products/{id}";
     private String createProductRequestUrl = "https://fakestoreapi.com/products";
     private String getAllProductsRequestUrl =  "https://fakestoreapi.com/products";
-    private GenericProductDto convertFakeStoreProductIntoGenericProduct(FakeStoreProductDto fakeStoreProductDto) {
-        GenericProductDto genericProduct = new GenericProductDto();
-        GenericProductDto product = new GenericProductDto();
-        product.setId(fakeStoreProductDto.getId());
+    Product convertFakeStoreProductIntoGenericProduct(FakeStoreProductDto fakeStoreProductDto) {
+        Product product = new Product();
+        product.setCategory(new Category());
+        //product.setId(fakeStoreProductDto.getId());
         product.setImage(fakeStoreProductDto.getImage());
         product.setDescription(fakeStoreProductDto.getDescription());
         product.setTitle(fakeStoreProductDto.getTitle());
         product.setPrice(fakeStoreProductDto.getPrice());
-        product.setCategory(fakeStoreProductDto.getCategory());
+        product.getCategory().setValue(fakeStoreProductDto.getCategory());
         return product;
     }
     public FakeStoreProductService (FakeStoreProductServiceClient fakeStoreProductServiceClient){
@@ -34,29 +38,30 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public GenericProductDto getProductById(Long id) throws NotFoundException {
+    public Product getProductById(Long id) throws NotFoundException {
         return convertFakeStoreProductIntoGenericProduct(fakeStoreProductServiceClient.getProductById(id));
     }
 
-    public GenericProductDto createProduct(GenericProductDto product){
+    public Product createProduct(GenericProductDto product){
         return convertFakeStoreProductIntoGenericProduct(fakeStoreProductServiceClient.createProduct(product));
     }
 
     @Override
-    public GenericProductDto deleteProductById(Long id) {
-        return convertFakeStoreProductIntoGenericProduct(fakeStoreProductServiceClient.deleteProductById(id));
+    public void deleteProductById(Long id) {
+        //return convertFakeStoreProductIntoGenericProduct(fakeStoreProductServiceClient.deleteProductById(id));
     }
 
-    public List<GenericProductDto> getAllProducts(){
-        List<GenericProductDto> genericProductList = new ArrayList<>();
+
+    public Page<Product> getAllProducts(int pageNumber, int pageSize){
+        List<Product> products = new ArrayList<>();
         for(FakeStoreProductDto fakeStoreProduct: fakeStoreProductServiceClient.getAllProducts()){
-            genericProductList.add(convertFakeStoreProductIntoGenericProduct(fakeStoreProduct));
+            products.add(convertFakeStoreProductIntoGenericProduct(fakeStoreProduct));
         }
-        return genericProductList;
+        return  new PageImpl<>(products);
     }
 
     @Override
-    public GenericProductDto updateProductById(GenericProductDto product,Long id) {
+    public Product updateProductById(GenericProductDto product,Long id) {
         return convertFakeStoreProductIntoGenericProduct(fakeStoreProductServiceClient.updateProductById(product,id));
     }
 
